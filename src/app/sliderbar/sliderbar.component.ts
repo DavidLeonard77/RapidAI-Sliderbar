@@ -175,6 +175,8 @@ export class SliderbarComponent implements OnChanges, OnInit {
   private createTicksAndSetPositions(length: number): void {
     if (length < 2) return;
 
+    length = Math.round(length);
+
     const tickWidth = +this.backgroundTrackSvg.x2 / (length - 1);
     let position,
       value = 0;
