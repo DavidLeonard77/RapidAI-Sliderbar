@@ -1,0 +1,56 @@
+<div class="value-slider">
+  <svg:svg xmlns="http://www.w3.org/2000/svg" #valueSlider>
+    <!-- Ticks -->
+    <svg:g class="ticks" *ngFor="let tick of tickSvgs">
+      <svg:line
+        class="tick"
+        [attr.x1]="tick.x1 + '%'"
+        [attr.y1]="tick.y1 + '%'"
+        [attr.x2]="tick.x2 + '%'"
+        [attr.y2]="tick.y2 + '%'"
+      ></svg:line>
+    </svg:g>
+
+    <!-- Track -->
+    <svg:g class="track">
+      <svg:line
+        class="background"
+        [attr.x1]="backgroundTrackSvg.x1 + '%'"
+        [attr.y1]="backgroundTrackSvg.y1 + '%'"
+        [attr.x2]="backgroundTrackSvg.x2 + '%'"
+        [attr.y2]="backgroundTrackSvg.y2 + '%'"
+      ></svg:line>
+      <svg:line
+        stroke="currentColor"
+        class="range"
+        [ngClass]="{ dragging }"
+        [attr.x1]="rangeTrackSvg.x1 + '%'"
+        [attr.y1]="rangeTrackSvg.y1 + '%'"
+        [attr.x2]="rangeTrackSvg.x2 + '%'"
+        [attr.y2]="rangeTrackSvg.y2 + '%'"
+      ></svg:line>
+    </svg:g>
+
+    <!-- Thumb handles -->
+    <svg:circle
+      #thumb
+      fill="currentColor"
+      class="thumb"
+      [ngClass]="{ dragging }"
+      [attr.r]="6"
+      [attr.cx]="thumbSvg.cx + '%'"
+      [attr.cy]="thumbSvg.cy + '%'"
+    ></svg:circle>
+
+    <!-- click area -->
+    <svg:rect
+      x="0"
+      y="0"
+      width="100%"
+      height="100%"
+      fill="transparent"
+      class="slider"
+      [ngClass]="name"
+    ></svg:rect>
+  </svg:svg>
+</div>

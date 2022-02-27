@@ -1,0 +1,70 @@
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.view-container {
+  display: grid;
+
+  .title {
+    display: grid;
+    justify-content: center;
+    font-size: 28px;
+  }
+  
+  .brown,
+  .brown-slider {
+    color: brown;
+  }
+  
+  .teal,
+  .teal-slider {
+    color: teal;
+  }
+  
+  .gold,
+  .gold-slider {
+    color: gold;
+  }
+  
+  .values-container {
+    width: 100%;
+    display: grid;
+    margin-top: 2rem;
+    gap: 2rem;
+    grid: {
+      auto-flow: row;
+      template-columns: repeat(3, 1fr);
+    }
+    .slider-state,
+    .value {
+      display: grid;
+      justify-items: center;
+    }
+    .title,
+    .slider-state {
+      grid-column: span 3;
+    }
+    .tick-count,
+    .is-snapped {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: 1rem;
+    }
+  }
+  
+}

@@ -1,0 +1,71 @@
+<div class="view-container">
+  <div class="title">{{ title }}</div>
+
+  <rapid-sliderbar
+    class="brown-slider"
+    name="brown-slider"
+    [percent]="brownValue"
+    [ticks]="brownTicks"
+    [snap]="brownIsSnapped"
+    (percentChange)="onBrownSliderChanges($event)"
+    (dragStarted)="onSliderDragStarted()"
+    (dragEnded)="onSliderDragEnded()"
+  ></rapid-sliderbar>
+
+  <rapid-sliderbar
+    class="teal-slider"
+    name="teal-slider"
+    [percent]="tealValue"
+    [ticks]="tealTicks"
+    [snap]="tealIsSnapped"
+    (percentChange)="onTealSliderChanges($event)"
+    (dragStarted)="onSliderDragStarted()"
+    (dragEnded)="onSliderDragEnded()"
+  ></rapid-sliderbar>
+
+  <rapid-sliderbar
+    class="gold-slider"
+    name="gold-slider"
+    [percent]="goldValue"
+    [ticks]="goldTicks"
+    [snap]="goldIsSnapped"
+    (percentChange)="onGoldSliderChanges($event)"
+    (dragStarted)="onSliderDragStarted()"
+    (dragEnded)="onSliderDragEnded()"
+  ></rapid-sliderbar>
+
+  <div class="values-container">
+    <div class="title">Inputs and Outputs</div>
+    <div class="slider-state">{{ sliderState }}</div>
+    <div class="value brown">
+      Position {{ brownValue | percent }}
+    </div>
+    <div class="tick-count">
+      <span>Ticks</span>
+      <input type="number" [(ngModel)]="brownTicks" />
+    </div>
+    <div class="is-snapped">
+      <input type="checkbox" [(ngModel)]="brownIsSnapped" /> <span>Snap</span>
+    </div>
+    <div class="value teal">
+      Position {{ tealValue | percent }}
+    </div>
+    <div class="tick-count">
+      <span>Ticks</span>
+      <input type="number" [(ngModel)]="tealTicks" />
+    </div>
+    <div class="is-snapped">
+      <input type="checkbox" [(ngModel)]="tealIsSnapped" /> <span>Snap</span>
+    </div>
+    <div class="value gold">
+      Position {{ goldValue | percent }}
+    </div>
+    <div class="tick-count">
+      <span>Ticks</span>
+      <input type="number" [(ngModel)]="goldTicks" />
+    </div>
+    <div class="is-snapped">
+      <input type="checkbox" [(ngModel)]="goldIsSnapped" /> <span>Snap</span>
+    </div>
+  </div>
+</div>

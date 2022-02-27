@@ -1,0 +1,50 @@
+$color: (
+  track: #cccccc,
+  shadow: #222222,
+);
+
+.value-slider {
+  padding: 0 12px;
+
+  svg {
+    height: 56px;
+    width: 100%;
+    overflow: visible;
+    display: block;
+    &:hover {
+      cursor: pointer;
+    }
+
+    .ticks {
+      line.tick {
+        stroke: map-get($color, track);
+        opacity: 0.5;
+        stroke-width: 1;
+      }
+    }
+
+    .track {
+      line.range {
+        stroke: currentColor;
+        opacity: 0.5;
+
+        &.dragging {
+          opacity: 1;
+        }
+      }
+      line.background {
+        stroke: map-get($color, track);
+        opacity: 0.5;
+        stroke-width: 3;
+      }
+    }
+
+    circle.thumb {
+      fill: currentColor;
+      &.dragging {
+        stroke-width: 3;
+        stroke: currentColor;
+      }
+    }
+  }
+}
