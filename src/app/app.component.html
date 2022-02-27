@@ -1,71 +1,72 @@
-<div class="view-container">
-  <div class="title">{{ title }}</div>
+<div class="view-container" [ngClass]="[slider.color]">
+  <div class="title">Rapid Sliderbar</div>
 
   <rapid-sliderbar
-    class="brown-slider"
-    name="brown-slider"
-    [percent]="brownValue"
-    [ticks]="brownTicks"
-    [snap]="brownIsSnapped"
-    (percentChange)="onBrownSliderChanges($event)"
+    name="rapid-slider"
+    [value]="slider.value"
+    [ticks]="slider.ticks"
+    [snap]="slider.snap"
+    (valueChange)="onSliderChanges($event)"
     (dragStarted)="onSliderDragStarted()"
     (dragEnded)="onSliderDragEnded()"
   ></rapid-sliderbar>
 
-  <rapid-sliderbar
-    class="teal-slider"
-    name="teal-slider"
-    [percent]="tealValue"
-    [ticks]="tealTicks"
-    [snap]="tealIsSnapped"
-    (percentChange)="onTealSliderChanges($event)"
-    (dragStarted)="onSliderDragStarted()"
-    (dragEnded)="onSliderDragEnded()"
-  ></rapid-sliderbar>
-
-  <rapid-sliderbar
-    class="gold-slider"
-    name="gold-slider"
-    [percent]="goldValue"
-    [ticks]="goldTicks"
-    [snap]="goldIsSnapped"
-    (percentChange)="onGoldSliderChanges($event)"
-    (dragStarted)="onSliderDragStarted()"
-    (dragEnded)="onSliderDragEnded()"
-  ></rapid-sliderbar>
-
-  <div class="values-container">
-    <div class="title">Inputs and Outputs</div>
+  <div class="options-container">
+    <div class="title">Options</div>
     <div class="slider-state">{{ sliderState }}</div>
-    <div class="value brown">
-      Position {{ brownValue | percent }}
+    <div class="color">
+      Color
+      <select [(ngModel)]="slider.color">
+        <option [value]="'brown'">Brown</option>
+        <option [value]="'teal'">Teal</option>
+        <option [value]="'gold'">Gold</option>
+      </select>
+    </div>
+    <div class="value">
+      Position <input type="number" [(ngModel)]="slider.value" />
     </div>
     <div class="tick-count">
       <span>Ticks</span>
-      <input type="number" [(ngModel)]="brownTicks" />
+      <input type="number" [(ngModel)]="slider.ticks" />
     </div>
     <div class="is-snapped">
-      <input type="checkbox" [(ngModel)]="brownIsSnapped" /> <span>Snap</span>
+      <input type="checkbox" [(ngModel)]="slider.snap" /> <span>Snap</span>
     </div>
-    <div class="value teal">
-      Position {{ tealValue | percent }}
-    </div>
-    <div class="tick-count">
-      <span>Ticks</span>
-      <input type="number" [(ngModel)]="tealTicks" />
-    </div>
-    <div class="is-snapped">
-      <input type="checkbox" [(ngModel)]="tealIsSnapped" /> <span>Snap</span>
-    </div>
-    <div class="value gold">
-      Position {{ goldValue | percent }}
-    </div>
-    <div class="tick-count">
-      <span>Ticks</span>
-      <input type="number" [(ngModel)]="goldTicks" />
-    </div>
-    <div class="is-snapped">
-      <input type="checkbox" [(ngModel)]="goldIsSnapped" /> <span>Snap</span>
+  </div>
+
+  <div class="div description">
+    <div class="title">Description</div>
+    <div>
+      <p>
+        RQUIREMENTS<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
+      <p>
+        ANGULAR FRAMEWORK<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
+      <p>
+        "SMART" OR "DUMB" COMPONENT<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
+      <p>
+        OPTIONS<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
+      <p>
+        SVG STRUCTURE<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
+      <p>
+        NOTES<br />
+        For this I chose dumb. Them reasoning is the component should be small
+        and presentational without service dependencies.
+      </p>
     </div>
   </div>
 </div>

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { SliderState } from './models/state.model';
+import { RapidSliderConfig } from './sliderbar/models/config.model';
+
+type SliderColor = 'gold' | 'teal' | 'brown';
 
 @Component({
   selector: 'app-root',
@@ -7,30 +10,18 @@ import { SliderState } from './models/state.model';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public title = 'RapidSliderbar';
+  public slider: RapidSliderConfig = {
+    value: 0.5,
+    ticks: 6,
+    snap: false,
+    color: 'gold',
+  };
 
-  public brownValue = .22;
-  public tealValue = .50;
-  public goldValue = .87;
-
-  public brownTicks = 6;
-  public tealTicks = 11;
-  public goldTicks = 41;
-
-  public brownIsSnapped = false;
-  public tealIsSnapped = true;
-  public goldIsSnapped = false;
-
+  public sliderColor: SliderColor = 'teal';
   public sliderState: SliderState = 'Not Dragging';
 
-  public onBrownSliderChanges(sliderValue: number): void {
-    this.brownValue = sliderValue;
-  }
-  public onTealSliderChanges(sliderValue: number): void {
-    this.tealValue = sliderValue;
-  }
-  public onGoldSliderChanges(sliderValue: number): void {
-    this.goldValue = sliderValue;
+  public onSliderChanges(sliderValue: number): void {
+    this.slider.value = sliderValue;
   }
 
   public onSliderDragStarted(): void {

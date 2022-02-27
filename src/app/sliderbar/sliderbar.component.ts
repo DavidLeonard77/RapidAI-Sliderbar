@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -10,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SvgCircle, SvgLine } from './models/svg.model';
+import { SvgCircle, SvgLine, SvgText } from './models/svg.model';
 
 export type ComponentChange<T, P extends keyof T> = {
   previousValue: T[P];
@@ -28,14 +27,14 @@ export type ComponentChanges<T> = {
   styleUrls: ['./sliderbar.component.scss'],
 })
 export class SliderbarComponent implements OnChanges, OnInit {
-  @Input() name = 'rapid-sliderbar';
-  @Input() percent = 0.5;
-  @Input() ticks = 0;
-  @Input() snap = false;
+  @Input() name: string | undefined;
+  @Input() value: number | undefined;
+  @Input() ticks: number | undefined;
+  @Input() snap: boolean | undefined;
 
   @Output() dragStarted = new EventEmitter<void>();
   @Output() dragEnded = new EventEmitter<void>();
-  @Output() percentChange = new EventEmitter<number>();
+  @Output() valueChange = new EventEmitter<number>();
 
   @ViewChild('valueSlider', { static: false }) valueSliderRef:
     | ElementRef<SVGSVGElement>
@@ -43,6 +42,8 @@ export class SliderbarComponent implements OnChanges, OnInit {
   @ViewChild('thumb', { static: false }) thumbRef:
     | ElementRef<SVGGraphicsElement>
     | undefined;
+
+  public tickValue = 0;
 
   private thumb: SVGGraphicsElement | undefined;
 
@@ -68,26 +69,27 @@ export class SliderbarComponent implements OnChanges, OnInit {
   };
 
   public tickSvgs: Array<SvgLine> = [];
+  public tickLabelSvgs: Array<SvgText> = [];
 
   constructor() {}
 
   public ngOnChanges(changes: ComponentChanges<SliderbarComponent>): void {
     if (this.valueSliderRef) {
-      const currentPercent: number | undefined = changes?.percent?.currentValue;
+      const currentValue: number | undefined = changes?.value?.currentValue;
       const currentTicks: number | undefined = changes?.ticks?.currentValue;
       const currentSnap: boolean | undefined = changes?.snap?.currentValue;
+
+      const percent: number = this.getPercentInRange(this.value);
+      const position: number = this.getPositionFromPercent(percent);
 
       // ticks value changes
       if (
         currentTicks !== undefined &&
         currentTicks !== changes.ticks?.previousValue
       ) {
+        this.setNearestTickValue(this.value);
         this.createTicksAndSetPositions(currentTicks);
-        const percent: number = this.getPercentInRange(this.percent);
-        const position: number = this.getPositionFromPercent(percent);
-
-        // tick change detection
-        setTimeout(() => this.emitHandlePercent(position));
+        setTimeout(() => this.emitHandlePosition(position));
       }
 
       // snap value changes
@@ -95,29 +97,27 @@ export class SliderbarComponent implements OnChanges, OnInit {
         currentSnap !== undefined &&
         currentSnap !== changes.snap?.previousValue
       ) {
-        const percent: number = this.getPercentInRange(this.percent);
-        const position: number = this.getPositionFromPercent(percent);
-
-        // tick change detection
-        setTimeout(() => this.emitHandlePercent(position));
+        this.setNearestTickValue(this.value);
+        setTimeout(() => this.emitHandlePosition(position));
       }
 
       // percent value changes
       if (
-        currentPercent !== undefined &&
-        currentPercent !== changes.percent?.previousValue
+        currentValue !== undefined &&
+        currentValue !== changes.value?.previousValue
       ) {
-        const percent: number = this.getPercentInRange(currentPercent);
-        const position: number = this.getPositionFromPercent(percent);
+        this.setNearestTickValue(this.value);
         this.setHandlePosition(position);
       }
     }
   }
 
   public ngOnInit(): void {
-    const percent: number = this.getPercentInRange(this.percent);
+    const percent: number = this.getPercentInRange(this.value);
     const position: number = this.getPositionFromPercent(percent);
-    this.createTicksAndSetPositions(this.ticks);
+
+    this.setNearestTickValue(this.value);
+    this.createTicksAndSetPositions(this.ticks || 2);
     this.setHandlePosition(position);
   }
 
@@ -175,24 +175,38 @@ export class SliderbarComponent implements OnChanges, OnInit {
   private createTicksAndSetPositions(length: number): void {
     if (length < 2) return;
 
-    const tickWidth = this.backgroundTrackSvg.x2 / (length - 1);
-    let position = 0;
+    const tickWidth = +this.backgroundTrackSvg.x2 / (length - 1);
+    let position,
+      value = 0;
     this.tickSvgs = [];
+    this.tickLabelSvgs = [];
 
     for (let index = 0; index < length; index++) {
       position = tickWidth * index;
+      value = Math.round(position);
       this.tickSvgs.push({
         x1: position,
-        y1: 0,
+        y1: 30,
         x2: position,
-        y2: 100,
+        y2: 70,
+      });
+
+      // center alignment is not available so we need to shift the labels
+      const labelLength = Math.round(position).toString().length;
+      const labelPosition =
+        position - ((labelLength === 1 ? 0 : labelLength) + 2) * 0.2;
+      this.tickLabelSvgs.push({
+        value,
+        x: labelPosition,
+        y: 150,
       });
     }
   }
 
   // Expects a number (percent)
   // Returns a number (percent) between 0 and 1
-  private getPercentInRange(currentValue: number): number {
+  private getPercentInRange(currentValue: number | undefined): number {
+    if (currentValue === undefined) return 0;
     let percent = 0;
     if (currentValue > 0) percent = currentValue;
     if (currentValue > 1) percent = 1;
@@ -203,7 +217,7 @@ export class SliderbarComponent implements OnChanges, OnInit {
   // Sets the handle position (percent)
   private setHandlePosition(position: number): void {
     const width = this.backgroundTrackSvg.x2;
-    const percent = (this.getPercentFromPosition(position) * width) / 100;
+    const percent = (this.getPercentFromPosition(position) * +width) / 100;
     const x = this.getNearestTickPercent(percent) * 100;
 
     this.thumbSvg.cx = x;
@@ -212,11 +226,11 @@ export class SliderbarComponent implements OnChanges, OnInit {
 
   // Expects a number (pixels)
   // Emits a number (percent) for the handle position
-  private emitHandlePercent(position: number): void {
+  private emitHandlePosition(position: number): void {
     let percent: number = this.getPercentFromPosition(position);
     percent = this.getNearestTickPercent(percent);
 
-    this.percentChange.next(percent);
+    this.valueChange.next(percent);
   }
 
   // Expects a number (pixels) from the pointer
@@ -228,7 +242,7 @@ export class SliderbarComponent implements OnChanges, OnInit {
     // handle cannot slide off the track
     if (position > 0 && position < maxPixels) {
       this.setHandlePosition(position);
-      this.emitHandlePercent(position);
+      this.emitHandlePosition(position);
     }
   }
 
@@ -237,7 +251,7 @@ export class SliderbarComponent implements OnChanges, OnInit {
     const target = event.target as SVGGraphicsElement;
     return (
       target.classList.contains('slider') &&
-      target.classList.contains(this.name)
+      target.classList.contains(this.name || '')
     );
   }
 
@@ -294,14 +308,22 @@ export class SliderbarComponent implements OnChanges, OnInit {
     if (this.snap && this.tickSvgs.length > 1) {
       const closestTickSvg: SvgLine = this.tickSvgs.reduce(
         (a: SvgLine, b: SvgLine) =>
-          Math.abs(b.x1 - percent * 100) < Math.abs(a.x1 - percent * 100)
+          Math.abs(+b.x1 - percent * 100) < Math.abs(+a.x1 - percent * 100)
             ? b
             : a
       );
 
-      return closestTickSvg.x1 / 100;
+      return Math.round(+closestTickSvg.x1) / 100;
     }
     return percent;
+  }
+
+  // Expects a number (percent)
+  // Sets the tick label (number) to compare against
+  private setNearestTickValue(percent: number | undefined): void {
+    const currentTickValue = percent !== undefined ? percent : 0.5;
+    const nearestTickValue = this.getNearestTickPercent(currentTickValue);
+    this.tickValue = Math.round(nearestTickValue * 100);
   }
 
   // Returns a number (pixels)

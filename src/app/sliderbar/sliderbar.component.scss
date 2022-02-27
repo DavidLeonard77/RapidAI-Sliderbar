@@ -1,13 +1,15 @@
 $color: (
-  track: #cccccc,
-  shadow: #222222,
+  track: #888888,
+  background: #444444,
 );
 
 .value-slider {
-  padding: 0 12px;
-
   svg {
-    height: 56px;
+    padding: 0 15px;
+    background: map-get($color, background);
+    border-radius: 15px;
+    overflow: hidden;
+    height: 30px;
     width: 100%;
     overflow: visible;
     display: block;
@@ -18,31 +20,33 @@ $color: (
     .ticks {
       line.tick {
         stroke: map-get($color, track);
-        opacity: 0.5;
-        stroke-width: 1;
+        stroke-width: 2;
+      }
+
+      text.label {
+        fill: map-get($color, track);
+        font-size: 11px;
+        &.active {
+          fill: currentColor;
+        }
       }
     }
 
     .track {
       line.range {
         stroke: currentColor;
-        opacity: 0.5;
-
-        &.dragging {
-          opacity: 1;
-        }
+        stroke-width: 4;
       }
       line.background {
         stroke: map-get($color, track);
-        opacity: 0.5;
-        stroke-width: 3;
+        stroke-width: 4;
       }
     }
 
     circle.thumb {
       fill: currentColor;
       &.dragging {
-        stroke-width: 3;
+        stroke-width: 4;
         stroke: currentColor;
       }
     }

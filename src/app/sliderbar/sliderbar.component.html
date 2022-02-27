@@ -1,7 +1,7 @@
 <div class="value-slider">
   <svg:svg xmlns="http://www.w3.org/2000/svg" #valueSlider>
     <!-- Ticks -->
-    <svg:g class="ticks" *ngFor="let tick of tickSvgs">
+    <svg:g class="ticks" *ngFor="let tick of tickSvgs; let i = index">
       <svg:line
         class="tick"
         [attr.x1]="tick.x1 + '%'"
@@ -9,6 +9,15 @@
         [attr.x2]="tick.x2 + '%'"
         [attr.y2]="tick.y2 + '%'"
       ></svg:line>
+
+      <text
+        class="label"
+        [ngClass]="{ active: tickLabelSvgs[i].value === tickValue }"
+        [attr.x]="tickLabelSvgs[i].x + '%'"
+        [attr.y]="tickLabelSvgs[i].y + '%'"
+      >
+        {{ tickLabelSvgs[i].value }}
+      </text>
     </svg:g>
 
     <!-- Track -->
@@ -37,7 +46,7 @@
       fill="currentColor"
       class="thumb"
       [ngClass]="{ dragging }"
-      [attr.r]="6"
+      [attr.r]="10"
       [attr.cx]="thumbSvg.cx + '%'"
       [attr.cy]="thumbSvg.cy + '%'"
     ></svg:circle>
@@ -47,10 +56,10 @@
       x="0"
       y="0"
       width="100%"
-      height="100%"
+      height="150%"
       fill="transparent"
       class="slider"
-      [ngClass]="name"
+      [ngClass]="name || 'rapid-slider'"
     ></svg:rect>
   </svg:svg>
 </div>
