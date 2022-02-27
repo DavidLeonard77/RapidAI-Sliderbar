@@ -38,34 +38,57 @@
     <div class="title">Description</div>
     <div>
       <p>
-        RQUIREMENTS<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
+        REQUIREMENTS<br />
+        Your implementation will cover:<br />
+        * Stylesheet implementation<br />
+        * Javascript implementation<br />
+        <br />
+        "Please avoid using 3rd party slider bar plugins/components, we want to
+        see that you're capable of building custom UI components yourself. Code
+        quality is important to us, so please show us that you have a good sense
+        of style and attention to detail in your code.""
       </p>
+      <br />
       <p>
         ANGULAR FRAMEWORK<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
-      </p>
-      <p>
-        "SMART" OR "DUMB" COMPONENT<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
+        For this I chose Angular and decided on creating a "dumb" component
+        pattern to implement the feature. The reasoning is the component is
+        small, re-usable and presentational.
       </p>
       <p>
         OPTIONS<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
+        The was no requirement here but it seemed, at a minimum, this component
+        should have the following set of configurable options and event
+        emitters:<br />
+        <br />
+        - Color(accessable through css)
+        <br />
+        - [value](optional): number<br />
+        - [ticks](optional): number<br />
+        - [snap](optional): boolean<br />
+        - [name](optional): string<br />
+        <br />
+        - (dragStarted): void<br />
+        - (dragEnded): void<br />
+        - (valueChange): number<br />
+        <br />
+        Note: Also considered but not implemented:<br />
+        - [disabled](optional:boolean<br />
+        - [min](optional):number<br />
+        - [max](optional):number<br />
       </p>
       <p>
-        SVG STRUCTURE<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
+        STRUCTURE<br />
+        Chose svg (mostly) to render the graphics over pure css for scalability
+        and options. Also, a resposive slider width (css) seemed prefferd over
+        fixed.
       </p>
       <p>
         NOTES<br />
-        For this I chose dumb. Them reasoning is the component should be small
-        and presentational without service dependencies.
+        Angular change-detection stategy could be looked at further for
+        performance gains. Also, unit test were not written for the sake of time
+        but would normally be included for a feature that is considered
+        "complete".
       </p>
     </div>
   </div>
