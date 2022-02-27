@@ -20,7 +20,14 @@ body {
   color: #999;
   display: grid;
   gap: 2rem;
-  padding: 4rem;
+  padding: 2rem 4rem;
+
+  justify-items: center;
+
+  rapid-sliderbar {
+    max-width: 800px;
+    width: 100%
+  }
 
   .title {
     display: grid;
