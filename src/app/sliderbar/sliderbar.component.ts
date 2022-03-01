@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -25,6 +26,7 @@ export type ComponentChanges<T> = {
   selector: 'rapid-sliderbar',
   templateUrl: './sliderbar.component.html',
   styleUrls: ['./sliderbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SliderbarComponent implements OnChanges, OnInit {
   @Input() name: string | undefined;
